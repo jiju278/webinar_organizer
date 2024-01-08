@@ -1,21 +1,6 @@
-type WebinarProps = {
-  id: string;
-  title: string;
-  seats: number;
-  startDate: Date;
-  endDate: Date;
-};
-export class Webinar {
-  constructor(public props: WebinarProps) {}
-}
-
-export interface IWebinarRepository {
-  create(webinar: Webinar): Promise<void>;
-}
-
-export interface IIDGenerator {
-  generate(): string;
-}
+import { Webinar } from 'src/entities/webinar.entity';
+import { IIDGenerator } from 'src/ports/id-generator.interface';
+import { IWebinarRepository } from 'src/ports/webinar.repository.interface';
 
 export class OrganizeWebinarUseCase {
   constructor(
