@@ -3,8 +3,10 @@ import { OrganizeWebinarUseCase } from './organize-webinar.usecase';
 import { InMemoryWebinarRepository } from 'src/adapters/in-memory.webinar.repository';
 import { Webinar } from 'src/entities/webinar.entity';
 import { FixedDateGenerator } from 'src/adapters/fixed-date-generator';
+import { User } from 'src/entities/user.entity';
 
 describe('Feature: organizing a webinar', () => {
+  const johnDoe = new User({ id: 'john-doe' });
   let webinarRepository: InMemoryWebinarRepository;
   let idGenerator: FixedIdGenerator;
   let organizeWebinarUseCase: OrganizeWebinarUseCase;
@@ -13,6 +15,7 @@ describe('Feature: organizing a webinar', () => {
   function expectWebinaireToEqual(webinar: Webinar) {
     expect(webinar.props).toEqual({
       id: 'id-1',
+      organizerId: 'john-doe',
       title: 'My first webinar',
       seats: 100,
       startDate: new Date('2024-01-20T10:00:00.000Z'),
@@ -32,6 +35,7 @@ describe('Feature: organizing a webinar', () => {
 
   describe('Scenario: happy path', () => {
     const payload = {
+      user: johnDoe,
       title: 'My first webinar',
       seats: 100,
       startDate: new Date('2024-01-20T10:00:00.000Z'),
@@ -56,6 +60,7 @@ describe('Feature: organizing a webinar', () => {
 
   describe('Scenario: the webinar happens too soon', () => {
     const payload = {
+      user: johnDoe,
       title: 'My first webinar',
       seats: 100,
       startDate: new Date('2024-01-01T00:00:00.000Z'),
@@ -81,6 +86,7 @@ describe('Feature: organizing a webinar', () => {
 
   describe('Scenario: the webinar has too many seats', () => {
     const payload = {
+      user: johnDoe,
       title: 'My first webinar',
       seats: 1500,
       startDate: new Date('2024-01-25T10:00:00.000Z'),
@@ -104,6 +110,7 @@ describe('Feature: organizing a webinar', () => {
 
   describe('Scenario: the webinar has no seat', () => {
     const payload = {
+      user: johnDoe,
       title: 'My first webinar',
       seats: 0,
       startDate: new Date('2024-01-25T10:00:00.000Z'),
