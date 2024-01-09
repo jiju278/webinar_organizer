@@ -1,5 +1,5 @@
-import { User } from 'src/entities/user.entity';
 import { Webinar } from 'src/entities/webinar.entity';
+import { User } from 'src/entities/user.entity';
 import { IDateGenerator } from 'src/ports/date-generator.interface';
 import { IIDGenerator } from 'src/ports/id-generator.interface';
 import { IWebinarRepository } from 'src/ports/webinar.repository.interface';

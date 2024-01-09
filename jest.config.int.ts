@@ -10,4 +10,9 @@ export default {
   testRegex: '\\.(int|e2e)\\.test\\.ts$',
   testTimeout: 8 * 1000,
   maxWorkers: 1,
+  rootDir: 'src',
+  moduleNameMapper: {
+    '^@webinar/(.*)$': '<rootDir>/modules/$1',
+    '^src/(.*)$': '<rootDir>/$1',
+  },
 };
