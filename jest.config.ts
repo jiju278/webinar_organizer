@@ -20,7 +20,7 @@ export default {
     ],
   },
   moduleNameMapper: {
-    '^@ancyr/(.*)$': '<rootDir>/modules/$1',
+    '^@webinar/(.*)$': '<rootDir>/modules/$1',
     '^src/(.*)$': '<rootDir>/$1',
   },
 };
