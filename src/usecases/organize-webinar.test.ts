@@ -6,7 +6,11 @@ import { FixedDateGenerator } from 'src/adapters/fixed-date-generator';
 import { User } from 'src/entities/user.entity';
 
 describe('Feature: organizing a webinar', () => {
-  const johnDoe = new User({ id: 'john-doe' });
+  const johnDoe = new User({
+    id: 'john-doe',
+    emailAddress: 'johndoe@gmail.com',
+    password: 'azerty',
+  });
   let webinarRepository: InMemoryWebinarRepository;
   let idGenerator: FixedIdGenerator;
   let organizeWebinarUseCase: OrganizeWebinarUseCase;
