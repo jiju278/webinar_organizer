@@ -1,8 +1,11 @@
 import * as request from 'supertest';
 import { addDays } from 'date-fns';
-import { InMemoryWebinarRepository } from 'src/adapters/in-memory.webinar.repository';
 import { TestApp } from './test-app';
 import { e2eUsers } from './user-seeds';
+import {
+  IWebinarRepository,
+  I_WEBINAR_REPOSITORY,
+} from 'src/ports/webinar.repository.interface';
 
 describe('Feature: organizing a webinar', () => {
   let app: TestApp;
@@ -34,10 +37,9 @@ describe('Feature: organizing a webinar', () => {
       expect(result.status).toBe(201);
       expect(result.body).toEqual({ id: expect.any(String) });
 
-      const webinarRepository = app.get<InMemoryWebinarRepository>(
-        InMemoryWebinarRepository,
-      );
-      const webinar = webinarRepository.database[0];
+      const webinarRepository =
+        app.get<IWebinarRepository>(I_WEBINAR_REPOSITORY);
+      const webinar = await webinarRepository.findById(result.body.id);
 
       expect(webinar).toBeDefined();
       expect(webinar.props).toEqual({
