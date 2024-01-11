@@ -1,9 +1,9 @@
-import { FixedIdGenerator } from 'src/adapters/fixed-id-generator';
+import { FixedIdGenerator } from 'src/core/adapters/fixed-id-generator';
 import { OrganizeWebinarUseCase } from './organize-webinar.usecase';
-import { InMemoryWebinarRepository } from 'src/adapters/in-memory.webinar.repository';
-import { Webinar } from 'src/entities/webinar.entity';
-import { FixedDateGenerator } from 'src/adapters/fixed-date-generator';
-import { User } from 'src/entities/user.entity';
+import { InMemoryWebinarRepository } from 'src/webinars/adapters/in-memory.webinar.repository';
+import { FixedDateGenerator } from 'src/core/adapters/fixed-date-generator';
+import { User } from 'src/users/entities/user.entity';
+import { Webinar } from '../entites/webinar.entity';
 
 describe('Feature: organizing a webinar', () => {
   const johnDoe = new User({

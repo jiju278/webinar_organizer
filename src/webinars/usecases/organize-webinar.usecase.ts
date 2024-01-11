@@ -1,8 +1,8 @@
-import { Webinar } from 'src/entities/webinar.entity';
-import { User } from 'src/entities/user.entity';
-import { IDateGenerator } from 'src/ports/date-generator.interface';
-import { IIDGenerator } from 'src/ports/id-generator.interface';
-import { IWebinarRepository } from 'src/ports/webinar.repository.interface';
+import { IDateGenerator } from 'src/core/ports/date-generator.interface';
+import { IIDGenerator } from 'src/core/ports/id-generator.interface';
+import { IWebinarRepository } from 'src/webinars/ports/webinar.repository.interface';
+import { Webinar } from '../entites/webinar.entity';
+import { User } from 'src/users/entities/user.entity';
 
 export class OrganizeWebinarUseCase {
   constructor(

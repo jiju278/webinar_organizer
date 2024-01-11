@@ -1,4 +1,4 @@
-import { IIDGenerator } from 'src/ports/id-generator.interface';
+import { IIDGenerator } from 'src/core/ports/id-generator.interface';
 
 export class FixedIdGenerator implements IIDGenerator {
   generate(): string {

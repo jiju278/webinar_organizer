@@ -1,4 +1,4 @@
-import { Webinar } from 'src/entities/webinar.entity';
+import { Webinar } from '../entites/webinar.entity';
 
 export const I_WEBINAR_REPOSITORY = 'I_WEBINAR_REPOSITORY';
 

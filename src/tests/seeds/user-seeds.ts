@@ -1,5 +1,5 @@
-import { User } from 'src/entities/user.entity';
-import { UserFixture } from './user.fixture';
+import { User } from 'src/users/entities/user.entity';
+import { UserFixture } from '../fixtures/user.fixture';
 
 export const e2eUsers = {
   johnDoe: new UserFixture(

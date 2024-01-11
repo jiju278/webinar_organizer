@@ -1,7 +1,10 @@
-import { User } from 'src/entities/user.entity';
-import { IFixture } from './fixture';
-import { TestApp } from './test-app';
-import { IUserRepository, I_USER_REPOSITORY } from 'src/ports/user.repository';
+import { User } from 'src/users/entities/user.entity';
+import { IFixture } from '../utils/fixture';
+import { TestApp } from '../utils/test-app';
+import {
+  IUserRepository,
+  I_USER_REPOSITORY,
+} from 'src/users/ports/user.repository';
 
 export class UserFixture implements IFixture {
   constructor(public readonly entity: User) {}
