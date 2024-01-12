@@ -1,8 +1,11 @@
 # Description of the project
 
-- Organize a webinar
+- Feature: Organize a webinar
   - It should be organized at least 3 days before
   - The maximum number of participant is 1000 and the minimum is 1
+- Feature: Change the number of seats. **Action reserved to the organiser**
+  - The number of seats must be higher than before changing
+  - The maximum number of seats is between 1 and 1000
 
 # Installation
 
