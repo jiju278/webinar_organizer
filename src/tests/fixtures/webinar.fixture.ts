@@ -1,4 +1,4 @@
-import { Webinar } from './../../webinars/entites/webinar.entity';
+import { Webinar } from '../../webinars/entities/webinar.entity';
 import { IFixture } from '../utils/fixture';
 import { TestApp } from '../utils/test-app';
 import {

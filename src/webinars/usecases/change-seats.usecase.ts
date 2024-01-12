@@ -1,5 +1,6 @@
 import { User } from 'src/users/entities/user.entity';
 import { IWebinarRepository } from '../ports/webinar.repository.interface';
+import { Executable } from 'src/shared/executable';
 
 type Request = {
   user: User;
@@ -9,7 +10,7 @@ type Request = {
 
 type Response = void;
 
-export class ChangeSeatsUseCase {
+export class ChangeSeatsUseCase implements Executable<Request, Response> {
   constructor(private readonly webinarRepository: IWebinarRepository) {}
   async execute({ user, webinarId, seats }: Request): Promise<Response> {
     const webinar = await this.webinarRepository.findById(webinarId);

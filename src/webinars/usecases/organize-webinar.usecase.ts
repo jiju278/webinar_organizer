@@ -1,22 +1,28 @@
 import { IDateGenerator } from 'src/core/ports/date-generator.interface';
 import { IIDGenerator } from 'src/core/ports/id-generator.interface';
 import { IWebinarRepository } from 'src/webinars/ports/webinar.repository.interface';
-import { Webinar } from '../entites/webinar.entity';
+import { Webinar } from '../entities/webinar.entity';
 import { User } from 'src/users/entities/user.entity';
+import { Executable } from 'src/shared/executable';
 
-export class OrganizeWebinarUseCase {
+type Request = {
+  user: User;
+  title: string;
+  seats: number;
+  startDate: Date;
+  endDate: Date;
+};
+
+type Response = {
+  id: string;
+};
+export class OrganizeWebinarUseCase implements Executable<Request, Response> {
   constructor(
     private readonly webinarRepository: IWebinarRepository,
     private readonly idGenerator: IIDGenerator,
     private readonly dateGenerator: IDateGenerator,
   ) {}
-  async execute(data: {
-    user: User;
-    title: string;
-    seats: number;
-    startDate: Date;
-    endDate: Date;
-  }): Promise<{ id: string }> {
+  async execute(data: Request): Promise<Response> {
     const id = this.idGenerator.generate();
     const webinar = new Webinar({
       id,

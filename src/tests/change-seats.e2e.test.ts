@@ -1,12 +1,12 @@
 import * as request from 'supertest';
 import { TestApp } from './utils/test-app';
-import { e2eUsers } from './seeds/user-seeds';
+import { e2eUsers } from './seeds/user.seeds.e2e';
 import {
   IWebinarRepository,
   I_WEBINAR_REPOSITORY,
 } from 'src/webinars/ports/webinar.repository.interface';
 import { WebinarFixture } from './fixtures/webinar.fixture';
-import { Webinar } from 'src/webinars/entites/webinar.entity';
+import { Webinar } from 'src/webinars/entities/webinar.entity';
 
 describe('Feature: changing the number of seats', () => {
   let app: TestApp;
