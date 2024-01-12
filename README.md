@@ -6,6 +6,9 @@
 - Feature: Change the number of seats. **Action reserved to the organiser**
   - The number of seats must be higher than before changing
   - The maximum number of seats is between 1 and 1000
+- Feature: Change the date. **Action reserved to the organiser**
+  - At least 3 days before
+  - Send email to all the participants
 
 # Installation
 
