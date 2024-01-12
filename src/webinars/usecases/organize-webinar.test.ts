@@ -48,11 +48,8 @@ describe('Feature: organizing a webinar', () => {
 
     test('Insertion of webinar into the database', async () => {
       await organizeWebinarUseCase.execute(payload);
-
       expect(webinarRepository.database.length).toBe(1);
-
       const createdWebinar = webinarRepository.database[0];
-
       expectWebinaireToEqual(createdWebinar);
     });
   });
