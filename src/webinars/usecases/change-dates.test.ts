@@ -107,7 +107,7 @@ describe('Feature: Changing the dates', () => {
 
     it('updating should fail', async () => {
       await expect(() => usecase.execute(payload)).rejects.toThrow(
-        'The webinar cannot be updated by someone else',
+        'You are not allowed to update the webinar',
       );
       expectDatesToRemainUnchanged();
     });

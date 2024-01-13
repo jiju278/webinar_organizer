@@ -1,6 +1,10 @@
 import { User } from 'src/users/entities/user.entity';
 import { IWebinarRepository } from '../ports/webinar.repository.interface';
 import { Executable } from 'src/shared/executable';
+import { WebinarNotFoundException } from '../exceptions/webinar-not-found.exception';
+import { WebinarUpdateForbiddenException } from '../exceptions/webinar-update-forbidden.exception';
+import { DomainException } from 'src/shared/exception';
+import { WebinarTooManySeatsException } from '../exceptions/webinar-too-many-seats.exception';
 
 type Request = {
   user: User;
@@ -15,20 +19,20 @@ export class ChangeSeatsUseCase implements Executable<Request, Response> {
   async execute({ user, webinarId, seats }: Request): Promise<Response> {
     const webinar = await this.webinarRepository.findById(webinarId);
     if (webinar === null) {
-      throw new Error('Webinar does not exist');
+      throw new WebinarNotFoundException();
     }
 
-    if (webinar.props.organizerId !== user.props.id) {
-      throw new Error('You are not allowed to update the webinar');
+    if (webinar.isOrganizer(user) === false) {
+      throw new WebinarUpdateForbiddenException();
     }
 
     if (seats < webinar.props.seats) {
-      throw new Error('Reducing the number of seats is impossible');
+      throw new DomainException('Reducing the number of seats is impossible');
     }
     webinar.update({ seats });
 
     if (webinar.hasTooManySeats()) {
-      throw new Error('The webinar must have a maximum of 1000 seats');
+      throw new WebinarTooManySeatsException();
     }
 
     await this.webinarRepository.update(webinar);

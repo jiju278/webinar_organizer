@@ -6,6 +6,9 @@ import { IParticipationRepository } from '../ports/participation.repository.inte
 import { IMailer } from 'src/core/ports/mailer.interface';
 import { IUserRepository } from 'src/users/ports/user.repository';
 import { Webinar } from '../entities/webinar.entity';
+import { WebinarNotFoundException } from '../exceptions/webinar-not-found.exception';
+import { WebinarUpdateForbiddenException } from '../exceptions/webinar-update-forbidden.exception';
+import { WebinarTooEarlyException } from '../exceptions/webinar-too-early.exception';
 
 type Request = {
   user: User;
@@ -24,28 +27,33 @@ export class ChangeDatesUseCase implements Executable<Request, Response> {
     private readonly mailer: IMailer,
     private readonly userRepository: IUserRepository,
   ) {}
-  async execute(request: Request): Promise<void> {
-    const webinar = await this.webinarRepository.findById(request.webinarId);
+  async execute({
+    user,
+    webinarId,
+    startDate,
+    endDate,
+  }: Request): Promise<void> {
+    const webinar = await this.webinarRepository.findById(webinarId);
 
     if (webinar === null) {
-      throw new Error('The Webinar does not exist');
+      throw new WebinarNotFoundException();
     }
 
-    if (webinar.props.organizerId !== request.user.props.id) {
-      throw new Error('The webinar cannot be updated by someone else');
+    if (webinar.props.organizerId !== user.props.id) {
+      throw new WebinarUpdateForbiddenException();
     }
 
-    webinar.update({ startDate: request.startDate, endDate: request.endDate });
+    webinar.update({ startDate, endDate });
 
     if (webinar.isTooClose(this.dateProvider.now())) {
-      throw new Error('The webinar must happen in at least 3 days before');
+      throw new WebinarTooEarlyException();
     }
     await this.webinarRepository.update(webinar);
 
     await this.sendEmailToParticipants(webinar);
   }
 
-  async sendEmailToParticipants(webinar: Webinar): Promise<void> {
+  private async sendEmailToParticipants(webinar: Webinar): Promise<void> {
     const participations = await this.participationRepository.findByWebinarId(
       webinar.props.id,
     );

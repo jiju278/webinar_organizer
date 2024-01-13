@@ -48,7 +48,7 @@ describe('Feature: changing the number of seats', () => {
     };
     test('Changing seats should fail', async () => {
       await expect(useCase.execute(payload)).rejects.toThrow(
-        'Webinar does not exist',
+        'The Webinar does not exist',
       );
       expectSeatsToRemainUnchanged();
     });

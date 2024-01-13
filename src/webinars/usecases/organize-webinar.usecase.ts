@@ -4,6 +4,9 @@ import { IWebinarRepository } from 'src/webinars/ports/webinar.repository.interf
 import { Webinar } from '../entities/webinar.entity';
 import { User } from 'src/users/entities/user.entity';
 import { Executable } from 'src/shared/executable';
+import { WebinarTooEarlyException } from '../exceptions/webinar-too-early.exception';
+import { WebinarTooManySeatsException } from '../exceptions/webinar-too-many-seats.exception';
+import { WebinarNotEnoughSeatsException } from '../exceptions/webinar-not-enough-seats.exception';
 
 type Request = {
   user: User;
@@ -34,15 +37,15 @@ export class OrganizeWebinarUseCase implements Executable<Request, Response> {
     });
 
     if (webinar.isTooClose(this.dateGenerator.now())) {
-      throw new Error('The webinar must happen in at least 3 days before');
+      throw new WebinarTooEarlyException();
     }
 
     if (webinar.hasTooManySeats()) {
-      throw new Error('The webinar must have a maximum of 1000 seats');
+      throw new WebinarTooManySeatsException();
     }
 
     if (webinar.hasNoSeat()) {
-      throw new Error('The webinar must have at least 1 seat');
+      throw new WebinarNotEnoughSeatsException();
     }
     await this.webinarRepository.create(webinar);
 
