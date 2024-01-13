@@ -4,12 +4,14 @@ import { OrganizeWebinarUseCase } from '../usecases/organize-webinar.usecase';
 import { ZodValidationPipe } from 'src/core/pipes/zod-validation.pipe';
 import { User } from 'src/users/entities/user.entity';
 import { WebinarAPI } from '../contract';
+import { ChangeDatesUseCase } from '../usecases/change-dates.usecase';
 
 @Controller()
 export class WebinarController {
   constructor(
     private readonly organizeWebinar: OrganizeWebinarUseCase,
     private readonly changeSeats: ChangeSeatsUseCase,
+    private readonly changeDates: ChangeDatesUseCase,
   ) {}
 
   @Post('/webinars')
@@ -38,6 +40,21 @@ export class WebinarController {
       user: request.user,
       webinarId: id,
       seats: body.seats,
+    });
+  }
+
+  @Put('/webinars/:id/dates')
+  async handleChangeDates(
+    @Param('id') id: string,
+    @Body(new ZodValidationPipe(WebinarAPI.ChangeDates.schema))
+    body: WebinarAPI.ChangeDates.Request,
+    @Request() request: { user: User },
+  ): Promise<WebinarAPI.ChangeDates.Response> {
+    return this.changeDates.execute({
+      user: request.user,
+      webinarId: id,
+      startDate: body.startDate,
+      endDate: body.endDate,
     });
   }
 }
