@@ -9,6 +9,9 @@
 - Feature: Change the date. **Action reserved to the organiser**
   - At least 3 days before
   - Send email to all the participants
+- Feature: Cancel the webinar. **Action reserved to the organiser**
+  - Cancel all reservations
+  - Send email to all the participants
 
 # Installation
 

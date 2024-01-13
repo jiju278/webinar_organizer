@@ -13,6 +13,7 @@ import { ChangeDatesUseCase } from './usecases/change-dates.usecase';
 import { I_USER_REPOSITORY } from 'src/users/ports/user.repository';
 import { I_MAILER } from 'src/core/ports/mailer.interface';
 import { UserModule } from 'src/users/user.module';
+import { CancelWebinarUseCase } from './usecases/cancel-webinar.usecase';
 
 @Module({
   imports: [CommonModule, UserModule],
@@ -65,6 +66,28 @@ import { UserModule } from 'src/users/user.module';
           dateGenerator,
           participationRepository,
           mailer,
+          userRepository,
+        );
+      },
+    },
+    {
+      provide: CancelWebinarUseCase,
+      inject: [
+        I_WEBINAR_REPOSITORY,
+        I_MAILER,
+        I_PARTICIPATION_REPOSITORY,
+        I_USER_REPOSITORY,
+      ],
+      useFactory: (
+        webinarRepository,
+        mailer,
+        participationRepository,
+        userRepository,
+      ) => {
+        return new CancelWebinarUseCase(
+          webinarRepository,
+          mailer,
+          participationRepository,
           userRepository,
         );
       },

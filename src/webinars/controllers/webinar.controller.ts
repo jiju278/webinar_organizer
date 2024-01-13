@@ -1,10 +1,19 @@
 import { ChangeSeatsUseCase } from './../usecases/change-seats.usecase';
-import { Body, Controller, Param, Post, Put, Request } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Param,
+  Post,
+  Put,
+  Request,
+} from '@nestjs/common';
 import { OrganizeWebinarUseCase } from '../usecases/organize-webinar.usecase';
 import { ZodValidationPipe } from 'src/core/pipes/zod-validation.pipe';
 import { User } from 'src/users/entities/user.entity';
 import { WebinarAPI } from '../contract';
 import { ChangeDatesUseCase } from '../usecases/change-dates.usecase';
+import { CancelWebinarUseCase } from '../usecases/cancel-webinar.usecase';
 
 @Controller()
 export class WebinarController {
@@ -12,6 +21,7 @@ export class WebinarController {
     private readonly organizeWebinar: OrganizeWebinarUseCase,
     private readonly changeSeats: ChangeSeatsUseCase,
     private readonly changeDates: ChangeDatesUseCase,
+    private readonly cancelWebinar: CancelWebinarUseCase,
   ) {}
 
   @Post('/webinars')
@@ -55,6 +65,17 @@ export class WebinarController {
       webinarId: id,
       startDate: body.startDate,
       endDate: body.endDate,
+    });
+  }
+
+  @Delete('/webinars/:id')
+  async handleCancelWebinar(
+    @Param('id') id: string,
+    @Request() request: { user: User },
+  ): Promise<WebinarAPI.CancelWebinar.Response> {
+    return this.cancelWebinar.execute({
+      user: request.user,
+      webinarId: id,
     });
   }
 }

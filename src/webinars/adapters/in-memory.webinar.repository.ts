@@ -23,4 +23,12 @@ export class InMemoryWebinarRepository implements IWebinarRepository {
     const webinar = this.database.find((webinar) => webinar.props.id === id);
     return webinar ? new Webinar({ ...webinar.initialState }) : null;
   }
+
+  async delete(webinar: Webinar): Promise<void> {
+    const findIndex = this.database.findIndex(
+      (w) => w.props.id === webinar.props.id,
+    );
+
+    this.database.splice(findIndex, 1);
+  }
 }
