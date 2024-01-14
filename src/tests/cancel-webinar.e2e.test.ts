@@ -5,9 +5,7 @@ import {
   IWebinarRepository,
   I_WEBINAR_REPOSITORY,
 } from 'src/webinars/ports/webinar.repository.interface';
-import { WebinarFixture } from './fixtures/webinar.fixture';
-import { Webinar } from 'src/webinars/entities/webinar.entity';
-import { addDays } from 'date-fns';
+import { e2eWebinars } from './seeds/webinar.seeds.e2e';
 
 describe('Feature: canceling the webinar', () => {
   let app: TestApp;
@@ -15,19 +13,7 @@ describe('Feature: canceling the webinar', () => {
   beforeEach(async () => {
     app = new TestApp();
     await app.setup();
-    await app.loadFixtures([
-      e2eUsers.johnDoe,
-      new WebinarFixture(
-        new Webinar({
-          id: 'id-1',
-          organizerId: e2eUsers.johnDoe.entity.props.id,
-          seats: 50,
-          title: 'My first webinar',
-          startDate: addDays(new Date(), 4),
-          endDate: addDays(new Date(), 5),
-        }),
-      ),
-    ]);
+    await app.loadFixtures([e2eUsers.johnDoe, e2eWebinars.webinar1]);
   });
 
   afterEach(async () => {
@@ -36,7 +22,8 @@ describe('Feature: canceling the webinar', () => {
 
   describe('Scenario: happy path', () => {
     it('should cancel the webinar', async () => {
-      const id = 'id-1';
+      const id = e2eWebinars.webinar1.entity.props.id;
+
       const result = await request(app.getHttpServer())
         .delete(`/webinars/${id}`)
         .set('Authorization', e2eUsers.johnDoe.createAuthorizationToken());
@@ -52,7 +39,7 @@ describe('Feature: canceling the webinar', () => {
 
   describe('Scenario: the user is not authenticated', () => {
     it('should reject', async () => {
-      const id = 'id-1';
+      const id = e2eWebinars.webinar1.entity.props.id;
 
       const result = await request(app.getHttpServer()).delete(
         `/webinars/${id}`,

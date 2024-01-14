@@ -12,6 +12,11 @@
 - Feature: Cancel the webinar. **Action reserved to the organiser**
   - Cancel all reservations
   - Send email to all the participants
+- Feature: Book a seat
+  - Check the number of remaining seats
+  - Check that we're not already registered
+  - Send a confirmation e-mail
+  - Send an e-mail to the organizer
 
 # Installation
 

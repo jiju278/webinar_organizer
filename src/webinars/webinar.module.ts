@@ -14,10 +14,12 @@ import { I_USER_REPOSITORY } from 'src/users/ports/user.repository';
 import { I_MAILER } from 'src/core/ports/mailer.interface';
 import { UserModule } from 'src/users/user.module';
 import { CancelWebinarUseCase } from './usecases/cancel-webinar.usecase';
+import { ParticipationController } from './controllers/participation.controller';
+import { ReserveSeatUseCase } from './usecases/reserve-seats.usecase';
 
 @Module({
   imports: [CommonModule, UserModule],
-  controllers: [WebinarController],
+  controllers: [WebinarController, ParticipationController],
   providers: [
     {
       provide: I_WEBINAR_REPOSITORY,
@@ -88,6 +90,28 @@ import { CancelWebinarUseCase } from './usecases/cancel-webinar.usecase';
           webinarRepository,
           mailer,
           participationRepository,
+          userRepository,
+        );
+      },
+    },
+    {
+      provide: ReserveSeatUseCase,
+      inject: [
+        I_PARTICIPATION_REPOSITORY,
+        I_MAILER,
+        I_WEBINAR_REPOSITORY,
+        I_USER_REPOSITORY,
+      ],
+      useFactory: (
+        participationRepository,
+        mailer,
+        webinarRepository,
+        userRepository,
+      ) => {
+        return new ReserveSeatUseCase(
+          participationRepository,
+          mailer,
+          webinarRepository,
           userRepository,
         );
       },
