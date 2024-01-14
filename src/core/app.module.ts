@@ -9,12 +9,17 @@ import { WebinarModule } from 'src/webinars/webinar.module';
 import { CommonModule } from './common.module';
 import { UserModule } from 'src/users/user.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(
-      'mongodb://admin:azerty@localhost:3701/webinars?authSource=admin&directConnection=true',
-    ),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (config: ConfigService) => ({
+        uri: config.get<string>('DATABASE_URL'),
+      }),
+    }),
     WebinarModule,
     CommonModule,
     UserModule,

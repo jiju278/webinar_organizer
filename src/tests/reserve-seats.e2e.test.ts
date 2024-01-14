@@ -45,7 +45,7 @@ describe('Feature: Reserving a seat', () => {
   });
 
   describe('Scenario: the user is not authenticated', () => {
-    xit('should reject', async () => {
+    it('should reject', async () => {
       const id = e2eWebinars.webinar1.entity.props.id;
 
       const result = await request(app.getHttpServer()).post(
