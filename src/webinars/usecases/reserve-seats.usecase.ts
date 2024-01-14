@@ -7,7 +7,8 @@ import { IWebinarRepository } from '../ports/webinar.repository.interface';
 import { IUserRepository } from 'src/users/ports/user.repository';
 import { Webinar } from '../entities/webinar.entity';
 import { WebinarNotFoundException } from '../exceptions/webinar-not-found.exception';
-import { WebinarNotEnoughSeatsException } from '../exceptions/webinar-not-enough-seats.exception';
+import { NoMoreSeatAvailableException } from '../exceptions/no-more-seat-available.exception';
+import { SeatAlreadyReservedException } from '../exceptions/seat-already-reserved.exception';
 
 type Request = {
   user: User;
@@ -75,7 +76,7 @@ export class ReserveSeatUseCase implements Executable<Request, Response> {
     );
 
     if (existingParticipation !== null) {
-      throw new Error('You already participate to this webinar');
+      throw new SeatAlreadyReservedException();
     }
   }
 
@@ -86,7 +87,7 @@ export class ReserveSeatUseCase implements Executable<Request, Response> {
       );
 
     if (participationCount >= webinar.props.seats) {
-      throw new WebinarNotEnoughSeatsException();
+      throw new NoMoreSeatAvailableException();
     }
   }
 }

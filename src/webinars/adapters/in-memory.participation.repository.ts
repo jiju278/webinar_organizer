@@ -37,4 +37,14 @@ export class InMemoryParticipationRepository
       0,
     );
   }
+
+  async delete(participation: Participation): Promise<void> {
+    const index = this.database.findIndex(
+      (p) =>
+        participation.props.userId === p.props.userId &&
+        p.props.webinarId === participation.props.webinarId,
+    );
+
+    this.database.splice(index, 1);
+  }
 }

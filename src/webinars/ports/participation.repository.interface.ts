@@ -6,4 +6,5 @@ export interface IParticipationRepository {
   findOne(userId: string, webinarId: string): Promise<Participation | null>;
   findByWebinarId(id: string): Promise<Participation[]>;
   findParticipationCount(webinarId: string): Promise<number>;
+  delete(participation: Participation): Promise<void>;
 }

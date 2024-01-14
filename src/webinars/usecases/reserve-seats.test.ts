@@ -7,7 +7,8 @@ import { InMemoryWebinarRepository } from '../adapters/in-memory.webinar.reposit
 import { InMemoryUserRepository } from 'src/users/adapters/in-memory.user.repository';
 import { WebinarNotFoundException } from '../exceptions/webinar-not-found.exception';
 import { Participation } from '../entities/participation.entity';
-import { WebinarNotEnoughSeatsException } from '../exceptions/webinar-not-enough-seats.exception';
+import { NoMoreSeatAvailableException } from '../exceptions/no-more-seat-available.exception';
+import { SeatAlreadyReservedException } from '../exceptions/seat-already-reserved.exception';
 
 describe('Feature: Booking a seat', () => {
   let participationRepository: InMemoryParticipationRepository;
@@ -125,7 +126,7 @@ describe('Feature: Booking a seat', () => {
     };
     test('Should fail', async () => {
       await expect(() => usecase.execute(payload)).rejects.toThrowError(
-        WebinarNotEnoughSeatsException,
+        NoMoreSeatAvailableException,
       );
       expectParticipationNotToBeCreated();
     });
@@ -138,7 +139,7 @@ describe('Feature: Booking a seat', () => {
     };
     test('Should fail', async () => {
       await expect(() => usecase.execute(payload)).rejects.toThrowError(
-        'You already participate to this webinar',
+        SeatAlreadyReservedException,
       );
       expectParticipationNotToBeCreated();
     });

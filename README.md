@@ -17,6 +17,10 @@
   - Check that we're not already registered
   - Send a confirmation e-mail
   - Send an e-mail to the organizer
+- Feature: Cancel its reservation
+  - Check that we're already participating
+  - Send a confirmation email
+  - Send a confirmation email to the organizer
 
 # Installation
 

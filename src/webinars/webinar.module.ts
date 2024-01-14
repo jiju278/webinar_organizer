@@ -16,6 +16,7 @@ import { UserModule } from 'src/users/user.module';
 import { CancelWebinarUseCase } from './usecases/cancel-webinar.usecase';
 import { ParticipationController } from './controllers/participation.controller';
 import { ReserveSeatUseCase } from './usecases/reserve-seats.usecase';
+import { CancelSeatUseCase } from './usecases/cancel-seat.usecase';
 
 @Module({
   imports: [CommonModule, UserModule],
@@ -113,6 +114,28 @@ import { ReserveSeatUseCase } from './usecases/reserve-seats.usecase';
           mailer,
           webinarRepository,
           userRepository,
+        );
+      },
+    },
+    {
+      provide: CancelSeatUseCase,
+      inject: [
+        I_WEBINAR_REPOSITORY,
+        I_PARTICIPATION_REPOSITORY,
+        I_USER_REPOSITORY,
+        I_MAILER,
+      ],
+      useFactory: (
+        webinarRepository,
+        participationRepository,
+        userRepository,
+        mailer,
+      ) => {
+        return new CancelSeatUseCase(
+          webinarRepository,
+          participationRepository,
+          userRepository,
+          mailer,
         );
       },
     },
