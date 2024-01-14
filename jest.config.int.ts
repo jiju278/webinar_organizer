@@ -11,6 +11,8 @@ export default {
   testTimeout: 8 * 1000,
   maxWorkers: 1,
   rootDir: 'src',
+  globalSetup: './tests/setup/global-setup.ts',
+  globalTeardown: './tests/setup/global-teardown.ts',
   moduleNameMapper: {
     '^@webinar/(.*)$': '<rootDir>/modules/$1',
     '^src/(.*)$': '<rootDir>/$1',

@@ -8,9 +8,17 @@ import { I_USER_REPOSITORY } from '../users/ports/user.repository';
 import { WebinarModule } from 'src/webinars/webinar.module';
 import { CommonModule } from './common.module';
 import { UserModule } from 'src/users/user.module';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
-  imports: [WebinarModule, CommonModule, UserModule],
+  imports: [
+    MongooseModule.forRoot(
+      'mongodb://admin:azerty@localhost:3701/webinars?authSource=admin&directConnection=true',
+    ),
+    WebinarModule,
+    CommonModule,
+    UserModule,
+  ],
   controllers: [AppController],
   providers: [
     AppService,
