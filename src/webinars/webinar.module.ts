@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { I_WEBINAR_REPOSITORY } from './ports/webinar.repository.interface';
-import { InMemoryWebinarRepository } from './adapters/in-memory.webinar.repository';
 import { OrganizeWebinarUseCase } from './usecases/organize-webinar.usecase';
 import { I_ID_GENERATOR } from 'src/core/ports/id-generator.interface';
 import { I_DATE_GENERATOR } from 'src/core/ports/date-generator.interface';
@@ -17,14 +16,29 @@ import { CancelWebinarUseCase } from './usecases/cancel-webinar.usecase';
 import { ParticipationController } from './controllers/participation.controller';
 import { ReserveSeatUseCase } from './usecases/reserve-seats.usecase';
 import { CancelSeatUseCase } from './usecases/cancel-seat.usecase';
+import { MongooseModule, getModelToken } from '@nestjs/mongoose';
+import { MongoWebinar } from './adapters/mongo/mongo-webinar';
+import { MongoWebinarRepository } from './adapters/mongo/mongo-webinar.repository';
 
 @Module({
-  imports: [CommonModule, UserModule],
+  imports: [
+    CommonModule,
+    UserModule,
+    MongooseModule.forFeature([
+      {
+        name: MongoWebinar.CollectionName,
+        schema: MongoWebinar.Schema,
+      },
+    ]),
+  ],
   controllers: [WebinarController, ParticipationController],
   providers: [
     {
       provide: I_WEBINAR_REPOSITORY,
-      useClass: InMemoryWebinarRepository,
+      inject: [getModelToken(MongoWebinar.CollectionName)],
+      useFactory: (model) => {
+        return new MongoWebinarRepository(model);
+      },
     },
     {
       provide: I_PARTICIPATION_REPOSITORY,

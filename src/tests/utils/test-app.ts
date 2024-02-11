@@ -6,6 +6,7 @@ import { IFixture } from './fixture';
 import { MongoUser } from 'src/users/adapters/mongo/mongo-user';
 import { Model } from 'mongoose';
 import { getModelToken } from '@nestjs/mongoose';
+import { MongoWebinar } from 'src/webinars/adapters/mongo/mongo-webinar';
 
 export class TestApp {
   private app: INestApplication;
@@ -52,6 +53,12 @@ export class TestApp {
     await this.app
       .get<Model<MongoUser.SchemaClass>>(
         getModelToken(MongoUser.CollectionName),
+      )
+      .deleteMany({});
+
+    await this.app
+      .get<Model<MongoWebinar.SchemaClass>>(
+        getModelToken(MongoWebinar.CollectionName),
       )
       .deleteMany({});
   }
