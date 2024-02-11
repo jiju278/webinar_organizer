@@ -7,7 +7,6 @@ import { WebinarController } from './controllers/webinar.controller';
 import { CommonModule } from 'src/core/common.module';
 import { ChangeSeatsUseCase } from './usecases/change-seats.usecase';
 import { I_PARTICIPATION_REPOSITORY } from './ports/participation.repository.interface';
-import { InMemoryParticipationRepository } from './adapters/in-memory.participation.repository';
 import { ChangeDatesUseCase } from './usecases/change-dates.usecase';
 import { I_USER_REPOSITORY } from 'src/users/ports/user.repository';
 import { I_MAILER } from 'src/core/ports/mailer.interface';
@@ -19,6 +18,8 @@ import { CancelSeatUseCase } from './usecases/cancel-seat.usecase';
 import { MongooseModule, getModelToken } from '@nestjs/mongoose';
 import { MongoWebinar } from './adapters/mongo/mongo-webinar';
 import { MongoWebinarRepository } from './adapters/mongo/mongo-webinar.repository';
+import { MongoParticipation } from './adapters/mongo/mongo-participation';
+import { MongoParticipationRepository } from './adapters/mongo/mongo-participation.repository';
 
 @Module({
   imports: [
@@ -28,6 +29,10 @@ import { MongoWebinarRepository } from './adapters/mongo/mongo-webinar.repositor
       {
         name: MongoWebinar.CollectionName,
         schema: MongoWebinar.Schema,
+      },
+      {
+        name: MongoParticipation.CollectionName,
+        schema: MongoParticipation.Schema,
       },
     ]),
   ],
@@ -42,7 +47,10 @@ import { MongoWebinarRepository } from './adapters/mongo/mongo-webinar.repositor
     },
     {
       provide: I_PARTICIPATION_REPOSITORY,
-      useClass: InMemoryParticipationRepository,
+      inject: [getModelToken(MongoParticipation.CollectionName)],
+      useFactory: (model) => {
+        return new MongoParticipationRepository(model);
+      },
     },
     {
       provide: OrganizeWebinarUseCase,
